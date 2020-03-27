@@ -1,10 +1,9 @@
-const GL = require("gl-react");
-const React = require("react");
-import resolveAssetSource from 'react-native/Libraries/Image/resolveAssetSource'
+const React = require('react');
+import { Shaders, Node, GLSL } from 'gl-react';
 
-const shaders = GL.Shaders.create({
+const shaders = Shaders.create({
   Amaro: {
-    frag: `
+    frag: GLSL`
       precision highp float;
       varying highp vec2 uv;
 
@@ -34,19 +33,16 @@ const shaders = GL.Shaders.create({
   }
 });
 
-module.exports = GL.createComponent(
-  ({ children: inputImageTexture }) => {
-    return <GL.Node
+export default ({ children: inputImageTexture }) => {
+  return (
+    <Node
       shader={shaders.Amaro}
       uniforms={{
         inputImageTexture,
-        inputImageTexture2: resolveAssetSource(require('../resources/blackboard1024.png')),
-        inputImageTexture3: resolveAssetSource(require('../resources/overlayMap.png')),
-        inputImageTexture4: resolveAssetSource(require('../resources/amaroMap.png')),
+        inputImageTexture2: require('../resources/blackboard1024.png'),
+        inputImageTexture3: require('../resources/overlayMap.png'),
+        inputImageTexture4: require('../resources/amaroMap.png')
       }}
     />
-  },
-  {
-    displayName: "Amaro"
-  }
-);
+  );
+};

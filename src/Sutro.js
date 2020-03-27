@@ -1,10 +1,9 @@
-import GL from 'gl-react'
+import { Shaders, Node, GLSL } from 'gl-react'
 import React from 'react'
-import resolveAssetSource from 'react-native/Libraries/Image/resolveAssetSource'
 
-const shaders = GL.Shaders.create({
+const shaders = Shaders.create({
   Sutro: {
-    frag: `
+    frag: GLSL`
       precision highp float;
       varying vec2 uv;
 
@@ -44,23 +43,20 @@ const shaders = GL.Shaders.create({
         gl_FragColor = vec4(texel, 1.0);
       }`
   }
-});
+})
 
-module.exports = GL.createComponent(
-  ({ children: inputImageTexture }) => {
-    return <GL.Node
+export default ({ children: inputImageTexture }) => {
+  return (
+    <Node
       shader={shaders.Sutro}
       uniforms={{
         inputImageTexture,
-        inputImageTexture2: resolveAssetSource(require('../resources/vignetteMap.png')),
-        inputImageTexture3: resolveAssetSource(require('../resources/sutroMetal.png')),
-        inputImageTexture4: resolveAssetSource(require('../resources/softLight.png')),
-        inputImageTexture5: resolveAssetSource(require('../resources/sutroEdgeBurn.png')),
-        inputImageTexture6: resolveAssetSource(require('../resources/sutroCurves.png'))
+        inputImageTexture2: require('../resources/vignetteMap.png'),
+        inputImageTexture3: require('../resources/sutroMetal.png'),
+        inputImageTexture4: require('../resources/softLight.png'),
+        inputImageTexture5: require('../resources/sutroEdgeBurn.png'),
+        inputImageTexture6: require('../resources/sutroCurves.png')
       }}
     />
-  },
-  {
-    displayName: "Sutro"
-  }
-);
+  )
+}

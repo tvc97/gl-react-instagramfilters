@@ -1,10 +1,9 @@
-import GL from 'gl-react'
-import React from 'react'
-import resolveAssetSource from 'react-native/Libraries/Image/resolveAssetSource'
+import { Shaders, Node, GLSL } from 'gl-react';
+import React from 'react';
 
-const shaders = GL.Shaders.create({
+const shaders = Shaders.create({
   Sierra: {
-    frag: `
+    frag: GLSL`
       precision highp float;
       varying vec2 uv;
 
@@ -33,19 +32,16 @@ const shaders = GL.Shaders.create({
   }
 });
 
-module.exports = GL.createComponent(
-  ({ children: inputImageTexture }) => {
-    return <GL.Node
+export default ({ children: inputImageTexture }) => {
+  return (
+    <Node
       shader={shaders.Sierra}
       uniforms={{
         inputImageTexture,
-        inputImageTexture2: resolveAssetSource(require('../resources/sierraVignette.png')),
-        inputImageTexture3: resolveAssetSource(require('../resources/overlayMap.png')),
-        inputImageTexture4: resolveAssetSource(require('../resources/sierraMap.png')),
+        inputImageTexture2: require('../resources/sierraVignette.png'),
+        inputImageTexture3: require('../resources/overlayMap.png'),
+        inputImageTexture4: require('../resources/sierraMap.png')
       }}
     />
-  },
-  {
-    displayName: "Sierra"
-  }
-);
+  );
+};

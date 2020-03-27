@@ -1,10 +1,9 @@
-import GL from 'gl-react'
-import React from 'react'
-import resolveAssetSource from 'react-native/Libraries/Image/resolveAssetSource'
+import { Shaders, Node, GLSL } from 'gl-react';
+import React from 'react';
 
-const shaders = GL.Shaders.create({
+const shaders = Shaders.create({
   Nashville: {
-    frag: `
+    frag: GLSL`
       precision highp float;
       varying vec2 uv;
 
@@ -23,17 +22,14 @@ const shaders = GL.Shaders.create({
   }
 });
 
-module.exports = GL.createComponent(
-  ({ children: inputImageTexture }) => {
-    return <GL.Node
+export default ({ children: inputImageTexture }) => {
+  return (
+    <Node
       shader={shaders.Nashville}
       uniforms={{
         inputImageTexture,
-        inputImageTexture2: resolveAssetSource(require('../resources/nashvilleMap.png')),
+        inputImageTexture2: require('../resources/nashvilleMap.png')
       }}
     />
-  },
-  {
-    displayName: "Nashville"
-  }
-);
+  );
+};
